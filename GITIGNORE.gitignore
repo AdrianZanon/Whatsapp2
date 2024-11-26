@@ -1,0 +1,27 @@
+# Archivos y carpetas generados por Dart y herramientas relacionadas
+
+# Build outputs
+/build/
+.dart_tool/
+
+# Archivos temporales de análisis y dependencias
+.packages
+.package_config.json
+.pub-cache/
+.pub/
+
+# Archivos de configuración del editor
+.idea/
+.vscode/
+*.iml
+
+# Archivos específicos de sistemas operativos
+.DS_Store
+Thumbs.db
+
+# Archivos de pruebas y cobertura
+coverage/
+
+# Archivos personales o de entorno
+.env
+*.log
