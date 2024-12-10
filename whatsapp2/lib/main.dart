@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'LogIn.dart';
+import 'SingUp.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Navegación',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: Screen1(), // Pantalla inicial
+      home: SingUp(), // Pantalla inicial
     );
   }
 }
