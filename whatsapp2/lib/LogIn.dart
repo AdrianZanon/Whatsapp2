@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class Screen1 extends StatefulWidget {
+class InicioSesion extends StatefulWidget {
   @override
   _Screen1State createState() => _Screen1State();
 }
 
-class _Screen1State extends State<Screen1> {
+class _Screen1State extends State<InicioSesion> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _isObscure = true;
