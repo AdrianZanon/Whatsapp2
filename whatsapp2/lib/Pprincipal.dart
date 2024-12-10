@@ -9,50 +9,186 @@ class Chat {
   Chat({required this.name, required this.lastMessage, required this.imageUrl});
 }
 
-class Principal extends StatelessWidget {
+class Principal extends StatefulWidget {
+  @override
+  _PrincipalState createState() => _PrincipalState();
+}
+
+class _PrincipalState extends State<Principal> {
   // Lista de chats (simulada)
   final List<Chat> chats = [
     Chat(
       name: "Iñigo",
-      lastMessage: "Las buenas al cielo y las malas al citroen",
-      imageUrl: "images/inigo.jpg", // Usa URL o imágenes locales
+      lastMessage: "Las buenas al cielo y las malas al Citroën",
+      imageUrl:
+          "assets/images/inigo.jpg", // Asegúrate de que la imagen esté en assets
     ),
     Chat(
       name: "Manasés",
       lastMessage: "Soy el gurú del sexo",
-      imageUrl: "https://example.com/ana.jpg",
+      imageUrl: "assets/images/inigo.jpg",
     ),
     Chat(
       name: "Rodrigo",
       lastMessage: "BIP BOP",
-      imageUrl: "https://example.com/carlos.jpg",
+      imageUrl: "assets/images/inigo.jpg",
     ),
     // Añadir más chats simulados si lo deseas
   ];
+
+  // Controlador de texto para la búsqueda
+  TextEditingController _controller = TextEditingController();
+  // Lista filtrada de chats
+  List<Chat> filteredChats = [];
+
+  @override
+  void initState() {
+    super.initState();
+    filteredChats =
+        chats; // Inicializamos la lista filtrada con todos los chats
+  }
+
+  // Filtrar chats según la búsqueda
+  void _filterChats(String query) {
+    setState(() {
+      filteredChats = chats
+          .where(
+              (chat) => chat.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Whatsapp 2'),
-      ),
-      body: ListView.builder(
-        itemCount: chats.length, // Número de elementos en la lista
-        itemBuilder: (context, index) {
-          final chat = chats[index];
-          return ListTile(
-            leading: CircleAvatar(
-              backgroundImage: AssetImage(chat.imageUrl), // Imagen de perfil
+        actions: [
+          // Barra de búsqueda en el AppBar
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                showSearch(
+                  context: context,
+                  delegate: CustomSearchDelegate(chats),
+                );
+              },
             ),
-            title: Text(chat.name),
-            subtitle: Text(chat.lastMessage), // Último mensaje
-            onTap: () {
-              // Aquí podrías implementar la navegación a un chat si fuera necesario
-              // Por ahora, no hacemos nada al tocar un chat
-            },
-          );
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          // Barra de búsqueda en la parte superior
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              controller: _controller,
+              decoration: InputDecoration(
+                hintText: 'Buscar...',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: _filterChats,
+            ),
+          ),
+          // Lista de chats filtrada
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredChats.length, // Usamos la lista filtrada
+              itemBuilder: (context, index) {
+                final chat = filteredChats[index];
+                return ListTile(
+                  leading: CircleAvatar(
+                    backgroundImage:
+                        AssetImage(chat.imageUrl), // Solo AssetImage
+                  ),
+                  title: Text(chat.name),
+                  subtitle: Text(chat.lastMessage),
+                  onTap: () {
+                    // Aquí podrías implementar la navegación a un chat si fuera necesario
+                  },
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  final List<Chat> chats;
+
+  CustomSearchDelegate(this.chats);
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = ''; // Clear the search query
         },
       ),
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null); // Close the search delegate
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    final filteredChats = chats
+        .where((chat) => chat.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: filteredChats.length,
+      itemBuilder: (context, index) {
+        final chat = filteredChats[index];
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage(chat.imageUrl), // Solo AssetImage
+          ),
+          title: Text(chat.name),
+          subtitle: Text(chat.lastMessage),
+          onTap: () {
+            // Implementar navegación si fuera necesario
+          },
+        );
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    final filteredChats = chats
+        .where((chat) => chat.name.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: filteredChats.length,
+      itemBuilder: (context, index) {
+        final chat = filteredChats[index];
+        return ListTile(
+          leading: CircleAvatar(
+            backgroundImage: AssetImage(chat.imageUrl), // Solo AssetImage
+          ),
+          title: Text(chat.name),
+          subtitle: Text(chat.lastMessage),
+        );
+      },
     );
   }
 }
