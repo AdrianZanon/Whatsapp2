@@ -1,5 +1,28 @@
 import 'package:flutter/material.dart';
 import 'LogIn.dart';
+import 'dart:convert';
+import 'dart:io';
+
+void _showAlert(BuildContext context, String alerta) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('Alerta'),
+        content: Text(alerta),
+        actions: [
+          // Botón para cerrar la alerta
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
+            },
+            child: Text('Aceptar'),
+          ),
+        ],
+      );
+    },
+  );
+}
 
 class SingUp extends StatelessWidget {
   // Crear los controladores para los campos de texto
@@ -99,18 +122,35 @@ class SingUp extends StatelessWidget {
                         String repetirContrasena =
                             repetirContrasenaController.text;
 
+                        bool error = false;
+                        if (!email.contains('@')) {
+                          _showAlert(context, "correo no válido");
+                          error = true;
+                        }
+                        if (contrasena != repetirContrasena) {
+                          _showAlert(context, "las contraseñas no coinciden");
+                          error = true;
+                        }
                         // Aquí podrías hacer validaciones o pasar los valores a la siguiente pantalla
                         print('Nombre: $nombre');
                         print('Email: $email');
+
                         print('Contraseña: $contrasena');
                         print('Repetir Contraseña: $repetirContrasena');
 
-                        // Navegar a otra pantalla si es necesario
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InicioSesion()),
-                        );
+                        final usuario = {
+                          'nombre': nombre,
+                          'email': email,
+                          'contrasena': contrasena
+                        };
+                        print("no hay errores");
+                        final archivo = File('lib/usuarios.json');
+                        archivo.writeAsString(jsonEncode(usuario));
+                        // Navigator.push(
+                        // context,
+                        //MaterialPageRoute(
+                        //  builder: (context) => InicioSesion()),
+                        // );
                       },
                       child: Text('Continuar'),
                     ),
