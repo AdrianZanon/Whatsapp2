@@ -68,7 +68,7 @@ class SingUp extends StatelessWidget {
                           TextField(
                             controller: nombreController,
                             decoration: InputDecoration(
-                              labelText: 'Nombre y apellidos',
+                              labelText: 'Nombre del usuario',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -145,12 +145,35 @@ class SingUp extends StatelessWidget {
                         };
                         print("no hay errores");
                         final archivo = File('lib/usuarios.json');
-                        archivo.writeAsString(jsonEncode(usuario));
-                        // Navigator.push(
-                        // context,
-                        //MaterialPageRoute(
-                        //  builder: (context) => InicioSesion()),
-                        // );
+
+                        // Leer los datos existentes (si el archivo no existe, usar una lista vacía)
+                        List<dynamic> usuarios = [];
+                        if (archivo.existsSync()) {
+                          final contenido = archivo.readAsStringSync();
+                          if (contenido.isNotEmpty) {
+                            try {
+                              usuarios = jsonDecode(
+                                  contenido); // Convertir el contenido JSON a una lista
+                            } catch (e) {
+                              print('Error al leer el archivo JSON: $e');
+                            }
+                          }
+                        }
+                        // Agregar el nuevo usuario a la lista
+                        usuarios.add(usuario);
+                        try {
+                          archivo.writeAsStringSync(jsonEncode(usuarios),
+                              mode: FileMode.write);
+                          print('Usuario añadido correctamente.');
+                        } catch (e) {
+                          print('Error al guardar el archivo JSON: $e');
+                        }
+
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => InicioSesion()),
+                        );
                       },
                       child: Text('Continuar'),
                     ),

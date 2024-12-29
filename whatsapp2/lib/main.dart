@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp2/LogIn.dart';
 import 'SingUp.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Navegación',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: SingUp(), // Pantalla inicial
+      home: InicioSesion(), // Pantalla inicial
     );
   }
 }

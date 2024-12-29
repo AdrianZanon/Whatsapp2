@@ -1,74 +1,126 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp2/Pprincipal.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'SingUp.dart'; // Importar la pantalla SingUp.dart
 
-class InicioSesion extends StatefulWidget {
-  @override
-  _Screen1State createState() => _Screen1State();
-}
+class InicioSesion extends StatelessWidget {
+  // Controladores para los campos de texto
+  final TextEditingController usuarioController = TextEditingController();
+  final TextEditingController contrasenaController = TextEditingController();
 
-class _Screen1State extends State<InicioSesion> {
-  final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  bool _isObscure = true;
-  String _usernameText = ''; // Almacena el nombre de usuario
-  String _passwordText =
-      ''; // Almacena la contraseña // Variable para mostrar el texto ingresado
+  void _showError(BuildContext context, String mensaje) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Error'),
+        content: Text(mensaje),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Aceptar'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _iniciarSesion(BuildContext context) async {
+    String usuarioIngresado = usuarioController.text;
+    String contrasenaIngresada = contrasenaController.text;
+
+    try {
+      // Leer el archivo usuarios.json
+      final archivo = File('lib/usuarios.json');
+      if (!archivo.existsSync()) {
+        _showError(context, 'No hay usuarios registrados.');
+        return;
+      }
+
+      // Parsear el contenido del archivo
+      final contenido = archivo.readAsStringSync();
+      final List<dynamic> usuarios = jsonDecode(contenido);
+
+      // Buscar coincidencia
+      bool encontrado = usuarios.any((usuario) =>
+          usuario['nombre'] == usuarioIngresado &&
+          usuario['contrasena'] == contrasenaIngresada);
+
+      if (encontrado) {
+        // Si se encuentra el usuario, continuar con el inicio de sesión
+        print('Inicio de sesión exitoso.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Inicio de sesión exitoso.')),
+        );
+      } else {
+        // Si no se encuentra, mostrar error
+        _showError(
+            context, 'El nombre de usuario o la contraseña no son válidos.');
+      }
+    } catch (e) {
+      // Manejar errores
+      _showError(context, 'Ocurrió un error al leer los datos.');
+      print('Error: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Inicio de sesión')),
+      appBar: AppBar(
+        title: Text('Inicio de Sesión'),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // Campo de texto para el nombre de usuario
             TextField(
-              controller: _usernameController,
+              controller: usuarioController,
               decoration: InputDecoration(
                 labelText: 'Nombre de usuario',
                 border: OutlineInputBorder(),
               ),
             ),
-            const SizedBox(height: 16),
-
+            SizedBox(height: 16), // Espaciado entre los campos de texto
             // Campo de texto para la contraseña
             TextField(
-              controller: _passwordController,
-              obscureText: _isObscure, // Oculta el texto de la contraseña
+              controller: contrasenaController,
+              obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Contraseña',
                 border: OutlineInputBorder(),
-                // Icono para alternar la visibilidad de la contraseña
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isObscure ? Icons.visibility : Icons.visibility_off,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isObscure =
-                          !_isObscure; // Alterna la visibilidad de la contraseña
-                    });
-                  },
-                ),
               ),
             ),
-            const SizedBox(height: 16),
-
-            // Botón para enviar los datos
+            SizedBox(
+                height:
+                    16), // Espaciado entre los campos de texto y los botones
+            // Botón para iniciar sesión
             ElevatedButton(
               onPressed: () {
-                // Guardamos los valores en las variables
-                setState(() {
-                  _usernameText = _usernameController.text;
-                  _passwordText = _passwordController.text;
-                });
-                // Aquí puedes utilizar las variables _usernameText y _passwordText
-                print('Usuario: $_usernameText');
-                print('Contraseña: $_passwordText');
+                _iniciarSesion(
+                    context); // Ejecutar la lógica de inicio de sesión
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          Principal()), // Navegar a la pantalla Chat
+                );
               },
-              child: Text('Iniciar sesión'),
+              child: Text('Iniciar Sesión'),
+            ),
+            SizedBox(height: 20), // Espacio entre los botones
+            // Botón para crear usuario
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SingUp()),
+                );
+              },
+              child: Text('Crear Usuario'),
             ),
           ],
         ),
