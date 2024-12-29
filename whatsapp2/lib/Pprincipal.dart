@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'opciones.dart'; // Importa la página de perfil
 
 // Definimos una clase para representar cada chat
 class Chat {
@@ -20,8 +21,7 @@ class _PrincipalState extends State<Principal> {
     Chat(
       name: "Iñigo",
       lastMessage: "Las buenas al cielo y las malas al Citroën",
-      imageUrl:
-          "assets/images/inigo.jpg", // Asegúrate de que la imagen esté en assets
+      imageUrl: "assets/images/inigo.jpg",
     ),
     Chat(
       name: "Manasés",
@@ -33,7 +33,6 @@ class _PrincipalState extends State<Principal> {
       lastMessage: "BIP BOP",
       imageUrl: "assets/images/inigo.jpg",
     ),
-    // Añadir más chats simulados si lo deseas
   ];
 
   // Controlador de texto para la búsqueda
@@ -44,8 +43,7 @@ class _PrincipalState extends State<Principal> {
   @override
   void initState() {
     super.initState();
-    filteredChats =
-        chats; // Inicializamos la lista filtrada con todos los chats
+    filteredChats = chats; // Inicializamos la lista filtrada con todos los chats
   }
 
   // Filtrar chats según la búsqueda
@@ -64,18 +62,25 @@ class _PrincipalState extends State<Principal> {
       appBar: AppBar(
         title: Text('Whatsapp 2'),
         actions: [
-          // Barra de búsqueda en el AppBar
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () {
-                showSearch(
-                  context: context,
-                  delegate: CustomSearchDelegate(chats),
-                );
-              },
-            ),
+          // Icono de búsqueda
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(chats),
+              );
+            },
+          ),
+          // Icono de perfil
+          IconButton(
+            icon: Icon(Icons.person),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PerfilPage()),
+              );
+            },
           ),
         ],
       ),
@@ -97,13 +102,12 @@ class _PrincipalState extends State<Principal> {
           // Lista de chats filtrada
           Expanded(
             child: ListView.builder(
-              itemCount: filteredChats.length, // Usamos la lista filtrada
+              itemCount: filteredChats.length,
               itemBuilder: (context, index) {
                 final chat = filteredChats[index];
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundImage:
-                        AssetImage(chat.imageUrl), // Solo AssetImage
+                    backgroundImage: AssetImage(chat.imageUrl),
                   ),
                   title: Text(chat.name),
                   subtitle: Text(chat.lastMessage),
@@ -131,7 +135,7 @@ class CustomSearchDelegate extends SearchDelegate {
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
-          query = ''; // Clear the search query
+          query = ''; // Limpiar la búsqueda
         },
       ),
     ];
@@ -142,7 +146,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
-        close(context, null); // Close the search delegate
+        close(context, null); // Cerrar el delegado de búsqueda
       },
     );
   }
@@ -159,7 +163,7 @@ class CustomSearchDelegate extends SearchDelegate {
         final chat = filteredChats[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage(chat.imageUrl), // Solo AssetImage
+            backgroundImage: AssetImage(chat.imageUrl),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),
@@ -183,7 +187,7 @@ class CustomSearchDelegate extends SearchDelegate {
         final chat = filteredChats[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage(chat.imageUrl), // Solo AssetImage
+            backgroundImage: AssetImage(chat.imageUrl),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),
