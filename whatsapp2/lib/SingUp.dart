@@ -11,7 +11,6 @@ void _showAlert(BuildContext context, String alerta) {
         title: Text('Alerta'),
         content: Text(alerta),
         actions: [
-          // Botón para cerrar la alerta
           TextButton(
             onPressed: () {
               Navigator.of(context).pop(); // Cerrar el cuadro de diálogo
@@ -25,7 +24,6 @@ void _showAlert(BuildContext context, String alerta) {
 }
 
 class SingUp extends StatelessWidget {
-  // Crear los controladores para los campos de texto
   final TextEditingController nombreController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController contrasenaController = TextEditingController();
@@ -47,9 +45,7 @@ class SingUp extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Spacer(
-                        flex:
-                            3), // Espacio para que el texto quede en el 3/4 de la pantalla
+                    Spacer(flex: 3),
                     Text(
                       'Registrarse',
                       style: TextStyle(
@@ -57,14 +53,11 @@ class SingUp extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Spacer(
-                        flex:
-                            1), // Espacio entre el título y los campos de texto
+                    Spacer(flex: 1),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16.0),
                       child: Column(
                         children: [
-                          // Campo para nombre y apellidos
                           TextField(
                             controller: nombreController,
                             decoration: InputDecoration(
@@ -72,22 +65,15 @@ class SingUp extends StatelessWidget {
                               border: OutlineInputBorder(),
                             ),
                           ),
-                          SizedBox(
-                              height:
-                                  16), // Espaciado entre los campos de texto
-
-                          // Campo para el email
+                          SizedBox(height: 16),
                           TextField(
                             controller: emailController,
-                            obscureText: false,
                             decoration: InputDecoration(
                               labelText: 'email',
                               border: OutlineInputBorder(),
                             ),
                           ),
                           SizedBox(height: 16),
-
-                          // Campo para la contraseña
                           TextField(
                             controller: contrasenaController,
                             obscureText: true,
@@ -97,8 +83,6 @@ class SingUp extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: 16),
-
-                          // Campo para repetir la contraseña
                           TextField(
                             controller: repetirContrasenaController,
                             obscureText: true,
@@ -110,74 +94,101 @@ class SingUp extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Spacer(
-                        flex:
-                            1), // Espacio entre los campos de texto y el botón
+                    Spacer(flex: 1),
                     ElevatedButton(
                       onPressed: () {
-                        // Acceder a los valores de los controladores
                         String nombre = nombreController.text;
                         String email = emailController.text;
                         String contrasena = contrasenaController.text;
                         String repetirContrasena =
                             repetirContrasenaController.text;
 
-                        bool error = false;
-                        if (!email.contains('@')) {
-                          _showAlert(context, "correo no válido");
-                          error = true;
-                        }
-                        if (contrasena != repetirContrasena) {
-                          _showAlert(context, "las contraseñas no coinciden");
-                          error = true;
-                        }
-                        // Aquí podrías hacer validaciones o pasar los valores a la siguiente pantalla
-                        print('Nombre: $nombre');
-                        print('Email: $email');
-
-                        print('Contraseña: $contrasena');
-                        print('Repetir Contraseña: $repetirContrasena');
-
-                        final usuario = {
-                          'nombre': nombre,
-                          'email': email,
-                          'contrasena': contrasena
-                        };
-                        print("no hay errores");
-                        final archivo = File('lib/usuarios.json');
-
-                        // Leer los datos existentes (si el archivo no existe, usar una lista vacía)
-                        List<dynamic> usuarios = [];
-                        if (archivo.existsSync()) {
-                          final contenido = archivo.readAsStringSync();
-                          if (contenido.isNotEmpty) {
-                            try {
-                              usuarios = jsonDecode(
-                                  contenido); // Convertir el contenido JSON a una lista
-                            } catch (e) {
-                              print('Error al leer el archivo JSON: $e');
+                        Future<bool> usurep(String email,
+                            {String archivo = "lib/usuarios.json"}) async {
+                          print("comprobando email");
+                          try {
+                            final file = File(archivo);
+                            if (!await file.exists()) {
+                              print("El archivo '$archivo' no existe.");
+                              return false;
                             }
+
+                            final contenido = await file.readAsString();
+                            final List<dynamic> usuarios =
+                                jsonDecode(contenido);
+
+                            // Verificamos si el email existe en la lista
+                            for (var usuario in usuarios) {
+                              if (usuario["email"] == email) {
+                                return true; // Email encontrado
+                              }
+                            }
+
+                            return false; // Email no encontrado
+                          } catch (e) {
+                            print("Error al procesar el archivo: $e");
+                            return false;
                           }
                         }
-                        // Agregar el nuevo usuario a la lista
-                        usuarios.add(usuario);
-                        try {
-                          archivo.writeAsStringSync(jsonEncode(usuarios),
-                              mode: FileMode.write);
-                          print('Usuario añadido correctamente.');
-                        } catch (e) {
-                          print('Error al guardar el archivo JSON: $e');
-                        }
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => InicioSesion()),
-                        );
+                        usurep(email).then((result) {
+                          // Validaciones
+                          if (!email.contains('@')) {
+                            _showAlert(context, "El correo no es válido.");
+                            return;
+                          } else if (contrasena != repetirContrasena) {
+                            _showAlert(
+                                context, "Las contraseñas no coinciden.");
+                            return;
+                          } else if (result == true) {
+                            _showAlert(context,
+                                "el usuario ya existe con este email.");
+                            return;
+                          } else {
+                            // Si todo es válido, crear el usuario
+                            final usuario = {
+                              'nombre': nombre,
+                              'email': email,
+                              'contrasena': contrasena,
+                            };
+
+                            final archivo = File('lib/usuarios.json');
+
+                            // Leer los datos existentes (si el archivo no existe, usar una lista vacía)
+                            List<dynamic> usuarios = [];
+                            if (archivo.existsSync()) {
+                              final contenido = archivo.readAsStringSync();
+                              if (contenido.isNotEmpty) {
+                                try {
+                                  usuarios = jsonDecode(contenido);
+                                } catch (e) {
+                                  print('Error al leer el archivo JSON: $e');
+                                }
+                              }
+                            }
+
+                            // Agregar el nuevo usuario a la lista
+                            usuarios.add(usuario);
+                            try {
+                              archivo.writeAsStringSync(jsonEncode(usuarios),
+                                  mode: FileMode.write);
+                              print('Usuario añadido correctamente.');
+                            } catch (e) {
+                              print('Error al guardar el archivo JSON: $e');
+                            }
+
+                            // Redirigir a la pantalla de inicio de sesión
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => InicioSesion()),
+                            );
+                          }
+                        });
                       },
                       child: Text('Continuar'),
                     ),
-                    Spacer(flex: 2), // Espacio inferior
+                    Spacer(flex: 2),
                   ],
                 ),
               ),

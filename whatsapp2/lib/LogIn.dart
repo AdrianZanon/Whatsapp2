@@ -5,7 +5,6 @@ import 'dart:io';
 import 'SingUp.dart'; // Importar la pantalla SingUp.dart
 
 class InicioSesion extends StatelessWidget {
-  // Controladores para los campos de texto
   final TextEditingController usuarioController = TextEditingController();
   final TextEditingController contrasenaController = TextEditingController();
 
@@ -25,7 +24,7 @@ class InicioSesion extends StatelessWidget {
     );
   }
 
-  void _iniciarSesion(BuildContext context) async {
+  Future<bool> _iniciarSesion(BuildContext context) async {
     String usuarioIngresado = usuarioController.text;
     String contrasenaIngresada = contrasenaController.text;
 
@@ -34,7 +33,7 @@ class InicioSesion extends StatelessWidget {
       final archivo = File('lib/usuarios.json');
       if (!archivo.existsSync()) {
         _showError(context, 'No hay usuarios registrados.');
-        return;
+        return false;
       }
 
       // Parsear el contenido del archivo
@@ -47,20 +46,19 @@ class InicioSesion extends StatelessWidget {
           usuario['contrasena'] == contrasenaIngresada);
 
       if (encontrado) {
-        // Si se encuentra el usuario, continuar con el inicio de sesión
-        print('Inicio de sesión exitoso.');
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Inicio de sesión exitoso.')),
         );
+        return true; // Indicar que el inicio de sesión fue exitoso
       } else {
-        // Si no se encuentra, mostrar error
         _showError(
             context, 'El nombre de usuario o la contraseña no son válidos.');
+        return false; // Inicio de sesión fallido
       }
     } catch (e) {
-      // Manejar errores
       _showError(context, 'Ocurrió un error al leer los datos.');
       print('Error: $e');
+      return false; // Manejar errores
     }
   }
 
@@ -99,15 +97,14 @@ class InicioSesion extends StatelessWidget {
                     16), // Espaciado entre los campos de texto y los botones
             // Botón para iniciar sesión
             ElevatedButton(
-              onPressed: () {
-                _iniciarSesion(
-                    context); // Ejecutar la lógica de inicio de sesión
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          Principal()), // Navegar a la pantalla Chat
-                );
+              onPressed: () async {
+                bool inicioExitoso = await _iniciarSesion(context);
+                if (inicioExitoso) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Principal()),
+                  );
+                }
               },
               child: Text('Iniciar Sesión'),
             ),
