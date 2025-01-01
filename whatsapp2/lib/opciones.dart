@@ -46,7 +46,8 @@ class _PerfilPageState extends State<PerfilPage> {
       List<dynamic> usuarios = jsonDecode(contenido);
       // Aquí buscar el usuario actual por su email o nombre
       for (var usuario in usuarios) {
-        if (usuario['email'] == _email) {  // Usar el email como identificador único
+        if (usuario['email'] == _email) {
+          // Usar el email como identificador único
           _imagePath = usuario['fotoPerfil'];
           break;
         }
@@ -72,7 +73,8 @@ class _PerfilPageState extends State<PerfilPage> {
         final contenido = archivo.readAsStringSync();
         List<dynamic> usuarios = jsonDecode(contenido);
         for (var usuario in usuarios) {
-          if (usuario['email'] == _email) {  // Usar el email como identificador único
+          if (usuario['email'] == _email) {
+            // Usar el email como identificador único
             usuario['fotoPerfil'] = pickedFile.path;
             break;
           }
@@ -113,7 +115,8 @@ class _PerfilPageState extends State<PerfilPage> {
               radius: 50,
               backgroundImage: _imagePath != null
                   ? FileImage(File(_imagePath!))
-                  : AssetImage('assets/images/default_profile.png') as ImageProvider,
+                  : AssetImage('assets\\images\\default_profile.png')
+                      as ImageProvider,
             ),
             SizedBox(height: 16),
             ElevatedButton(
@@ -148,13 +151,73 @@ class _ChangeNamePageState extends State<ChangeNamePage> {
   // Función para cambiar el nombre
   void _changeName() async {
     String newName = _nombreController.text;
+
     if (newName.isNotEmpty) {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('nombre', newName);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Nombre cambiado a: $newName')),
-      );
-      Navigator.pop(context); // Volver a la página anterior
+      String? email =
+          prefs.getString('email'); // Identifica al usuario por email.
+      if (email != null) {
+        // Intentar actualizar el archivo JSON
+        final archivo = File('lib/usuarios.json');
+        if (archivo.existsSync()) {
+          final contenido = archivo.readAsStringSync();
+          List<dynamic> usuarios = jsonDecode(contenido);
+
+          // Busca al usuario por email
+          Map<String, dynamic>? usuarioActual;
+          for (var usuario in usuarios) {
+            if (usuario['email'] == email) {
+              usuarioActual = usuario;
+              print({usuarioActual?['nombre']});
+              break;
+            }
+          }
+
+          if (usuarioActual != null) {
+            // Eliminar al usuario existente
+            usuarios.remove(usuarioActual);
+
+            // Crear un nuevo usuario con el nombre actualizado
+            Map<String, dynamic> nuevoUsuario = Map.from(usuarioActual);
+            nuevoUsuario['nombre'] = newName;
+
+            // Añadir el nuevo usuario a la lista
+            usuarios.add(nuevoUsuario);
+
+            // Guardar los cambios en el archivo JSON
+            archivo.writeAsStringSync(jsonEncode(usuarios),
+                mode: FileMode.write);
+
+            // Actualizar en SharedPreferences
+            prefs.setString('nombre', newName);
+
+            // Imprimir los valores actualizados
+            print('Usuario actualizado: $nuevoUsuario');
+
+            // Mostrar mensaje de éxito
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Nombre cambiado a: $newName')),
+            );
+            Navigator.pop(context);
+          } else {
+            // No se encontró el usuario en el JSON
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content: Text('Error: Usuario no encontrado en el JSON')),
+            );
+          }
+        } else {
+          // Archivo JSON no encontrado
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Error: Archivo JSON no existe')),
+          );
+        }
+      } else {
+        // No se pudo obtener el email
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: Email no encontrado en preferencias')),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Por favor, ingresa un nombre válido')),
@@ -251,7 +314,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             TextField(
               controller: _repetirContrasenaController,
               obscureText: true,
-              decoration: InputDecoration(labelText: 'Repetir nueva contraseña'),
+              decoration:
+                  InputDecoration(labelText: 'Repetir nueva contraseña'),
             ),
             SizedBox(height: 16),
             ElevatedButton(
