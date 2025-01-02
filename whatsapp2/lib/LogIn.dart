@@ -3,6 +3,7 @@ import 'package:whatsapp2/Pprincipal.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'SingUp.dart'; // Importar la pantalla SingUp.dart
+import 'opciones.dart';
 
 class InicioSesion extends StatelessWidget {
   final TextEditingController usuarioController = TextEditingController();
@@ -98,11 +99,26 @@ class InicioSesion extends StatelessWidget {
             // Botón para iniciar sesión
             ElevatedButton(
               onPressed: () async {
+                String logueado = usuarioController.text;
                 bool inicioExitoso = await _iniciarSesion(context);
                 if (inicioExitoso) {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Principal()),
+                    MaterialPageRoute(
+                      builder: (context) {
+                        switch (logueado) {
+                          case "Inigo":
+                            return Principal();
+                          case "javi":
+                            return PerfilPage();
+                          case "sergi":
+                            return Principal();
+                          // Agrega más casos según tus necesidades
+                          default:
+                            return Principal(); // Valor por defecto
+                        }
+                      },
+                    ),
                   );
                 }
               },
