@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp2/Pprincipal.dart';
 import 'dart:convert';
 import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'SingUp.dart'; // Importar la pantalla SingUp.dart
 import 'opciones.dart';
 
@@ -46,10 +47,25 @@ class InicioSesion extends StatelessWidget {
           usuario['nombre'] == usuarioIngresado &&
           usuario['contrasena'] == contrasenaIngresada);
 
+      Map<String, dynamic>? usuarioEncontrado = usuarios.firstWhere(
+        (usuario) =>
+            usuario['nombre'] == usuarioIngresado &&
+            usuario['contrasena'] == contrasenaIngresada,
+        orElse: () => null, // Si no se encuentra, devuelve null
+      );
+
       if (encontrado) {
+        // Guardar el email en SharedPreferences
+        String email = usuarioEncontrado?['email'];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', email);
+        print("antes");
+        print(usuarioEncontrado?["email"]);
+        print("despues");
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Inicio de sesión exitoso.')),
         );
+
         return true; // Indicar que el inicio de sesión fue exitoso
       } else {
         _showError(

@@ -267,25 +267,79 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     String newPassword = _nuevaContrasenaController.text;
     String repeatPassword = _repetirContrasenaController.text;
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? storedPassword = prefs.getString('contrasena');
+    try {
+      // Obtener el email del usuario desde SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? email = prefs.getString('email');
 
-    if (storedPassword == currentPassword) {
-      if (newPassword == repeatPassword && newPassword.isNotEmpty) {
-        prefs.setString('contrasena', newPassword);
+      if (email == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Contraseña cambiada con éxito')),
+          SnackBar(
+              content: Text('Error: No se pudo obtener el email del usuario.')),
         );
-        Navigator.pop(context); // Volver a la página anterior
+        return;
+      }
+
+      // Leer el archivo JSON
+      final archivo = File('lib/usuarios.json');
+      if (!archivo.existsSync()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: El archivo de usuarios no existe.')),
+        );
+        return;
+      }
+
+      // Parsear el contenido del archivo JSON
+      final contenido = archivo.readAsStringSync();
+      List<dynamic> usuarios = jsonDecode(contenido);
+
+      // Buscar al usuario actual por email
+      Map<String, dynamic>? usuarioActual = usuarios.firstWhere(
+        (usuario) => usuario['email'] == email,
+        orElse: () => null,
+      );
+
+      if (usuarioActual == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content:
+                  Text('Error: Usuario no encontrado en el archivo JSON.')),
+        );
+        return;
+      }
+
+      // Verificar si la contraseña actual coincide
+      if (usuarioActual['contrasena'] == currentPassword) {
+        if (newPassword == repeatPassword && newPassword.isNotEmpty) {
+          // Actualizar la contraseña en el usuario
+          usuarioActual['contrasena'] = newPassword;
+
+          // Guardar los cambios en el archivo JSON
+          archivo.writeAsStringSync(jsonEncode(usuarios), mode: FileMode.write);
+
+          // Actualizar la contraseña en SharedPreferences
+          prefs.setString('contrasena', newPassword);
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Contraseña cambiada con éxito')),
+          );
+          Navigator.pop(context); // Volver a la página anterior
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content: Text('Las contraseñas no coinciden o están vacías')),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Las contraseñas no coinciden')),
+          SnackBar(content: Text('Contraseña actual incorrecta')),
         );
       }
-    } else {
+    } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Contraseña actual incorrecta')),
+        SnackBar(content: Text('Ocurrió un error al cambiar la contraseña.')),
       );
+      print('Error: $e');
     }
   }
 
