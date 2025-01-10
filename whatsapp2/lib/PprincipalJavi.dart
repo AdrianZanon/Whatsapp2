@@ -10,12 +10,12 @@ class Chat {
   Chat({required this.name, required this.lastMessage, required this.imageUrl});
 }
 
-class Principal extends StatefulWidget {
+class PrincipalJavi extends StatefulWidget {
   @override
   _PrincipalState createState() => _PrincipalState();
 }
 
-class _PrincipalState extends State<Principal> {
+class _PrincipalState extends State<PrincipalJavi> {
   // Lista de chats (simulada)
   final List<Chat> chats = [
     Chat(
@@ -33,6 +33,11 @@ class _PrincipalState extends State<Principal> {
       lastMessage: "BIP BOP",
       imageUrl: "assets/images/inigo.jpg",
     ),
+    Chat(
+      name: "Elvira La rojas",
+      lastMessage: "Hola Javi, dame leche",
+      imageUrl: "assets/images/inigo.jpg",
+    ),
   ];
 
   // Controlador de texto para la búsqueda
@@ -43,7 +48,8 @@ class _PrincipalState extends State<Principal> {
   @override
   void initState() {
     super.initState();
-    filteredChats = chats; // Inicializamos la lista filtrada con todos los chats
+    filteredChats =
+        chats; // Inicializamos la lista filtrada con todos los chats
   }
 
   // Filtrar chats según la búsqueda

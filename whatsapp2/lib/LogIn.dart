@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp2/Pprincipal.dart';
+import 'package:whatsapp2/PprincipalInigo.dart';
+import 'package:whatsapp2/PprincipalInigo.dart';
+import 'package:whatsapp2/PprincipalInigo.dart';
+import 'package:whatsapp2/PprincipalJavi.dart';
+import 'package:whatsapp2/PprincipalSergi.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'SingUp.dart'; // Importar la pantalla SingUp.dart
-import 'opciones.dart';
 
 class InicioSesion extends StatelessWidget {
   final TextEditingController usuarioController = TextEditingController();
@@ -124,14 +127,14 @@ class InicioSesion extends StatelessWidget {
                       builder: (context) {
                         switch (logueado) {
                           case "Inigo":
-                            return Principal();
+                            return PrincipalInigo();
                           case "javi":
-                            return PerfilPage();
+                            return PrincipalJavi();
                           case "sergi":
-                            return Principal();
+                            return PrincipalSergi();
                           // Agrega más casos según tus necesidades
                           default:
-                            return Principal(); // Valor por defecto
+                            return PrincipalInigo(); // Valor por defecto
                         }
                       },
                     ),
