@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
-import 'opciones.dart'; // Importa la página de perfil
+import 'package:whatsapp2/Chat_Manases.dart';
+import 'package:whatsapp2/Chat_Rodri.dart';
+import 'package:whatsapp2/PprincipalSergi.dart';
+import 'package:whatsapp2/opciones.dart';
+import 'package:whatsapp2/Chat_Irene.dart';
+
+//import 'Chat_Elvira.dart'; // Importa la pantalla de conversación
 
 // Definimos una clase para representar cada chat
 class Chat {
@@ -7,7 +13,11 @@ class Chat {
   final String lastMessage;
   final String imageUrl;
 
-  Chat({required this.name, required this.lastMessage, required this.imageUrl});
+  Chat({
+    required this.name,
+    required this.lastMessage,
+    required this.imageUrl,
+  });
 }
 
 class PrincipalSergi extends StatefulWidget {
@@ -16,7 +26,6 @@ class PrincipalSergi extends StatefulWidget {
 }
 
 class _PrincipalState extends State<PrincipalSergi> {
-  // Lista de chats (simulada)
   final List<Chat> chats = [
     Chat(
       name: "Iñigo",
@@ -41,19 +50,15 @@ class _PrincipalState extends State<PrincipalSergi> {
     ),
   ];
 
-  // Controlador de texto para la búsqueda
   TextEditingController _controller = TextEditingController();
-  // Lista filtrada de chats
   List<Chat> filteredChats = [];
 
   @override
   void initState() {
     super.initState();
-    filteredChats =
-        chats; // Inicializamos la lista filtrada con todos los chats
+    filteredChats = chats;
   }
 
-  // Filtrar chats según la búsqueda
   void _filterChats(String query) {
     setState(() {
       filteredChats = chats
@@ -69,17 +74,15 @@ class _PrincipalState extends State<PrincipalSergi> {
       appBar: AppBar(
         title: Text('Whatsapp 2'),
         actions: [
-          // Icono de búsqueda
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: CustomSearchDelegate(chats),
+                delegate: CustomSearchDelegate(chats: chats),
               );
             },
           ),
-          // Icono de perfil
           IconButton(
             icon: Icon(Icons.person),
             onPressed: () {
@@ -93,7 +96,6 @@ class _PrincipalState extends State<PrincipalSergi> {
       ),
       body: Column(
         children: [
-          // Barra de búsqueda en la parte superior
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -106,7 +108,6 @@ class _PrincipalState extends State<PrincipalSergi> {
               onChanged: _filterChats,
             ),
           ),
-          // Lista de chats filtrada
           Expanded(
             child: ListView.builder(
               itemCount: filteredChats.length,
@@ -114,17 +115,40 @@ class _PrincipalState extends State<PrincipalSergi> {
                 final chat = filteredChats[index];
                 return ListTile(
                   leading: CircleAvatar(
-                    radius: 25, // Borde alrededor de la imagen
-                    backgroundColor: Colors.grey[300], // Color del borde
-                    child: CircleAvatar(
-                      radius: 23, // Tamaño del avatar dentro del borde
-                      backgroundImage: AssetImage(chat.imageUrl),
-                    ),
+                    backgroundImage: AssetImage(chat.imageUrl),
                   ),
                   title: Text(chat.name),
                   subtitle: Text(chat.lastMessage),
                   onTap: () {
-                    // Aquí podrías implementar la navegación a un chat si fuera necesario
+                    if (chat.name == "Iñigo") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Chat_Irene(chat: chat),
+                        ),
+                      );
+                    } else if (chat.name == "Irene") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Chat_Irene(chat: chat),
+                        ),
+                      );
+                    } else if (chat.name == "Manasés") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Chat_Irene(chat: chat),
+                        ),
+                      );
+                    } else if (chat.name == "Rodrigo") {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Chat_Irene(chat: chat),
+                        ),
+                      );
+                    }
                   },
                 );
               },
@@ -139,53 +163,53 @@ class _PrincipalState extends State<PrincipalSergi> {
 class CustomSearchDelegate extends SearchDelegate {
   final List<Chat> chats;
 
-  CustomSearchDelegate(this.chats);
+  CustomSearchDelegate({required this.chats});
 
   @override
-  List<Widget> buildActions(BuildContext context) {
+  List<Widget>? buildActions(BuildContext context) {
     return [
       IconButton(
         icon: Icon(Icons.clear),
         onPressed: () {
-          query = ''; // Limpiar la búsqueda
+          query = '';
         },
       ),
     ];
   }
 
   @override
-  Widget buildLeading(BuildContext context) {
+  Widget? buildLeading(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
-        close(context, null); // Cerrar el delegado de búsqueda
+        close(context, null);
       },
     );
   }
 
   @override
   Widget buildResults(BuildContext context) {
-    final filteredChats = chats
+    final results = chats
         .where((chat) => chat.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
-      itemCount: filteredChats.length,
+      itemCount: results.length,
       itemBuilder: (context, index) {
-        final chat = filteredChats[index];
+        final chat = results[index];
         return ListTile(
           leading: CircleAvatar(
-            radius: 25, // Borde alrededor de la imagen
-            backgroundColor: Colors.grey[300], // Color del borde
-            child: CircleAvatar(
-              radius: 23, // Tamaño del avatar dentro del borde
-              backgroundImage: AssetImage(chat.imageUrl),
-            ),
+            backgroundImage: AssetImage(chat.imageUrl),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),
           onTap: () {
-            // Implementar navegación si fuera necesario
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Chat_Irene(chat: chat),
+              ),
+            );
           },
         );
       },
@@ -194,25 +218,28 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    final filteredChats = chats
+    final suggestions = chats
         .where((chat) => chat.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
-      itemCount: filteredChats.length,
+      itemCount: suggestions.length,
       itemBuilder: (context, index) {
-        final chat = filteredChats[index];
+        final chat = suggestions[index];
         return ListTile(
           leading: CircleAvatar(
-            radius: 25, // Borde alrededor de la imagen
-            backgroundColor: Colors.grey[300], // Color del borde
-            child: CircleAvatar(
-              radius: 23, // Tamaño del avatar dentro del borde
-              backgroundImage: AssetImage(chat.imageUrl),
-            ),
+            backgroundImage: AssetImage(chat.imageUrl),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => Chat_Irene(chat: chat),
+              ),
+            );
+          },
         );
       },
     );
