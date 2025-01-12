@@ -21,23 +21,23 @@ class _PrincipalState extends State<PrincipalSergi> {
     Chat(
       name: "Iñigo",
       lastMessage: "Las buenas al cielo y las malas al Citroën",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Manasés",
       lastMessage: "Soy el gurú del sexo",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Rodrigo",
       lastMessage: "BIP BOP",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Irene",
       lastMessage:
           "Sergi, tienes que escuchar la nueva sesion de hermanos Capilla",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
   ];
 
@@ -114,7 +114,12 @@ class _PrincipalState extends State<PrincipalSergi> {
                 final chat = filteredChats[index];
                 return ListTile(
                   leading: CircleAvatar(
-                    backgroundImage: AssetImage(chat.imageUrl),
+                    radius: 25, // Borde alrededor de la imagen
+                    backgroundColor: Colors.grey[300], // Color del borde
+                    child: CircleAvatar(
+                      radius: 23, // Tamaño del avatar dentro del borde
+                      backgroundImage: AssetImage(chat.imageUrl),
+                    ),
                   ),
                   title: Text(chat.name),
                   subtitle: Text(chat.lastMessage),
@@ -170,7 +175,12 @@ class CustomSearchDelegate extends SearchDelegate {
         final chat = filteredChats[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage(chat.imageUrl),
+            radius: 25, // Borde alrededor de la imagen
+            backgroundColor: Colors.grey[300], // Color del borde
+            child: CircleAvatar(
+              radius: 23, // Tamaño del avatar dentro del borde
+              backgroundImage: AssetImage(chat.imageUrl),
+            ),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),
@@ -194,7 +204,12 @@ class CustomSearchDelegate extends SearchDelegate {
         final chat = filteredChats[index];
         return ListTile(
           leading: CircleAvatar(
-            backgroundImage: AssetImage(chat.imageUrl),
+            radius: 25, // Borde alrededor de la imagen
+            backgroundColor: Colors.grey[300], // Color del borde
+            child: CircleAvatar(
+              radius: 23, // Tamaño del avatar dentro del borde
+              backgroundImage: AssetImage(chat.imageUrl),
+            ),
           ),
           title: Text(chat.name),
           subtitle: Text(chat.lastMessage),

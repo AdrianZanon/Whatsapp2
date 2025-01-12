@@ -21,22 +21,22 @@ class _PrincipalState extends State<PrincipalJavi> {
     Chat(
       name: "Iñigo",
       lastMessage: "Las buenas al cielo y las malas al Citroën",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Manasés",
       lastMessage: "Soy el gurú del sexo",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Rodrigo",
       lastMessage: "BIP BOP",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat(
       name: "Elvira La rojas",
       lastMessage: "Hola Javi, dame leche",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
   ];
 

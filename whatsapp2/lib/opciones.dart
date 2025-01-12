@@ -31,58 +31,72 @@ class _PerfilPageState extends State<PerfilPage> {
     _loadPreferences();
   }
 
-  // Cargar datos persistentes
   _loadPreferences() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _nombre = prefs.getString('nombre');
-      _email = prefs.getString('email');
-    });
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? email = prefs.getString('email');  // Obtener el email del usuario logueado
 
-    // Leer el archivo JSON para obtener la foto de perfil
-    final archivo = File('lib/usuarios.json');
-    if (archivo.existsSync()) {
-      final contenido = archivo.readAsStringSync();
-      List<dynamic> usuarios = jsonDecode(contenido);
-      // Aquí buscar el usuario actual por su email o nombre
-      for (var usuario in usuarios) {
-        if (usuario['email'] == _email) {
-          // Usar el email como identificador único
-          _imagePath = usuario['fotoPerfil'];
-          break;
-        }
+  setState(() {
+    _nombre = prefs.getString('nombre');
+    _email = email;
+    _imagePath = null;  // Inicializar la ruta de la imagen
+  });
+
+  // Leer el archivo JSON y buscar la foto del usuario actual
+  final archivo = File('lib/usuarios.json');
+  if (archivo.existsSync()) {
+    final contenido = archivo.readAsStringSync();
+    List<dynamic> usuarios = jsonDecode(contenido);
+
+    for (var usuario in usuarios) {
+      if (usuario['email'] == email) {
+        // Usar el email como identificador único
+        _imagePath = usuario['fotoPerfil']; // Obtener la foto de perfil del usuario actual
+        break;
       }
     }
-    setState(() {});
   }
+  setState(() {});
+}
+
+
+
 
   // Función para seleccionar una imagen
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setString('imagePath', pickedFile.path);
+Future<void> _pickImage() async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  if (pickedFile != null) {
+    // Obtener el email del usuario logueado desde SharedPreferences
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email'); // Obtener el email del usuario
+
+    if (email != null) {
       setState(() {
         _imagePath = pickedFile.path;
       });
 
-      // Actualizar la foto en el JSON
+      // Actualizar la foto de perfil en el archivo JSON solo para el usuario actual
       final archivo = File('lib/usuarios.json');
       if (archivo.existsSync()) {
         final contenido = archivo.readAsStringSync();
         List<dynamic> usuarios = jsonDecode(contenido);
+
+        // Encontrar al usuario actual por su email y actualizar su foto de perfil
         for (var usuario in usuarios) {
-          if (usuario['email'] == _email) {
-            // Usar el email como identificador único
-            usuario['fotoPerfil'] = pickedFile.path;
+          if (usuario['email'] == email) {
+            usuario['fotoPerfil'] = pickedFile.path; // Guardar la nueva ruta de la imagen
             break;
           }
         }
+
+        // Guardar los cambios en el archivo JSON
         archivo.writeAsStringSync(jsonEncode(usuarios), mode: FileMode.write);
       }
     }
   }
+}
+
+
 
   // Navegar a la página para cambiar el nombre
   void _goToChangeName() {
@@ -111,13 +125,13 @@ class _PerfilPageState extends State<PerfilPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Imagen de perfil
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: _imagePath != null
-                  ? FileImage(File(_imagePath!))
-                  : AssetImage('assets\\images\\default_profile.png')
-                      as ImageProvider,
-            ),
+            // Imagen de perfil (si no existe, usa la imagen predeterminada)
+              CircleAvatar(
+                radius: 50,
+                backgroundImage: _imagePath != null && _imagePath!.isNotEmpty
+                    ? FileImage(File(_imagePath!))
+                    : AssetImage('assets/images/default_profile.png') as ImageProvider,
+              ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _pickImage,

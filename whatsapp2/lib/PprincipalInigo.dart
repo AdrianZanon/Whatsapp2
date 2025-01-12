@@ -28,17 +28,17 @@ class _PrincipalState extends State<PrincipalInigo> {
     Chat1(
       name: "Javi",
       lastMessage: "Pisha, no has limpiado el baño guarro",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat1(
       name: "Manasés",
       lastMessage: "Soy el gurú del sexo, y lo sabes",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
     Chat1(
       name: "Rodrigo",
       lastMessage: "BIP BOP",
-      imageUrl: "assets/images/inigo.jpg",
+      imageUrl: "assets/images/default_profile.png",
     ),
   ];
 
