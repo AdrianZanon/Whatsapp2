@@ -1,13 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp2/PprincipalInigo.dart';
 import 'package:whatsapp2/PprincipalInigo.dart';
-import 'package:whatsapp2/PprincipalInigo.dart';
 import 'package:whatsapp2/PprincipalJavi.dart';
 import 'package:whatsapp2/PprincipalSergi.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'SingUp.dart'; // Importar la pantalla SingUp.dart
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Whatsapp 2',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.black,
+          secondary: Colors.amber,
+        ),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        textTheme: TextTheme(
+          titleLarge: TextStyle(
+              fontSize: 20.0, fontWeight: FontWeight.bold, color: Colors.black),
+          bodyMedium: TextStyle(fontSize: 16.0, color: Colors.black87),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.black,
+          titleTextStyle: TextStyle(
+              color: Colors.amber, fontSize: 20.0, fontWeight: FontWeight.bold),
+          iconTheme: IconThemeData(color: Colors.amber),
+        ),
+      ),
+      home: InicioSesion(), // Página inicial corregida
+    );
+  }
+}
 
 class InicioSesion extends StatelessWidget {
   final TextEditingController usuarioController = TextEditingController();
@@ -99,7 +131,30 @@ class InicioSesion extends StatelessWidget {
               controller: usuarioController,
               decoration: InputDecoration(
                 labelText: 'Nombre de usuario',
-                border: OutlineInputBorder(),
+                labelStyle:
+                    TextStyle(color: Colors.black), // Color de la etiqueta
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.black, // Color del borde por defecto
+                    width: 2.0, // Ancho del borde
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color:
+                        Colors.black, // Color del borde cuando está habilitado
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.amber, // Color del borde cuando está enfocado
+                    width: 2.0,
+                  ),
+                ),
               ),
             ),
             SizedBox(height: 16), // Espaciado entre los campos de texto
@@ -109,7 +164,30 @@ class InicioSesion extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Contraseña',
-                border: OutlineInputBorder(),
+                labelStyle:
+                    TextStyle(color: Colors.black), // Color de la etiqueta
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.black, // Color del borde por defecto
+                    width: 2.0, // Ancho del borde
+                  ),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color:
+                        Colors.black, // Color del borde cuando está habilitado
+                    width: 2.0,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide(
+                    color: Colors.amber, // Color del borde cuando está enfocado
+                    width: 2.0,
+                  ),
+                ),
               ),
             ),
             SizedBox(
