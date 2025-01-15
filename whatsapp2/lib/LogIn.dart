@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp2/PprincipalInigo.dart';
-import 'package:whatsapp2/PprincipalInigo.dart';
 import 'package:whatsapp2/PprincipalJavi.dart';
 import 'package:whatsapp2/PprincipalSergi.dart';
 import 'dart:convert';
@@ -36,7 +35,7 @@ class MyApp extends StatelessWidget {
           iconTheme: IconThemeData(color: Colors.amber),
         ),
       ),
-      home: InicioSesion(), // Página inicial corregida
+      home: InicioSesion(),
     );
   }
 }
@@ -118,14 +117,27 @@ class InicioSesion extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inicio de Sesión'),
+        title: Text('Whatsapp 2'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(64.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            // Texto encima del campo "Nombre de Usuario"
+            Text(
+              'Iniciar Sesión',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+            ),
+            SizedBox(
+                height: 32), // Espaciado entre el texto y el campo de usuario
+
             // Campo de texto para el nombre de usuario
             TextField(
               controller: usuarioController,
@@ -158,6 +170,7 @@ class InicioSesion extends StatelessWidget {
               ),
             ),
             SizedBox(height: 16), // Espaciado entre los campos de texto
+
             // Campo de texto para la contraseña
             TextField(
               controller: contrasenaController,
@@ -193,7 +206,8 @@ class InicioSesion extends StatelessWidget {
             SizedBox(
                 height:
                     16), // Espaciado entre los campos de texto y los botones
-            // Botón para iniciar sesión
+
+            // Botón para iniciar sesión con el texto "Whatsapp 2"
             ElevatedButton(
               onPressed: () async {
                 String logueado = usuarioController.text;
@@ -219,9 +233,10 @@ class InicioSesion extends StatelessWidget {
                   );
                 }
               },
-              child: Text('Iniciar Sesión'),
+              child: Text('Iniciar Sesión'), // Cambio aquí
             ),
             SizedBox(height: 20), // Espacio entre los botones
+
             // Botón para crear usuario
             ElevatedButton(
               onPressed: () {

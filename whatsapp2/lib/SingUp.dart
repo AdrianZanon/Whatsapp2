@@ -62,7 +62,7 @@ class SingUp extends StatelessWidget {
                             controller: nombreController,
                             decoration: InputDecoration(
                               labelText: 'Nombre del usuario',
-                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(),
                             ),
                           ),
                           SizedBox(height: 16),
@@ -70,7 +70,7 @@ class SingUp extends StatelessWidget {
                             controller: emailController,
                             decoration: InputDecoration(
                               labelText: 'Email',
-                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(),
                             ),
                           ),
                           SizedBox(height: 16),
@@ -79,7 +79,7 @@ class SingUp extends StatelessWidget {
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Contraseña',
-                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(),
                             ),
                           ),
                           SizedBox(height: 16),
@@ -88,7 +88,7 @@ class SingUp extends StatelessWidget {
                             obscureText: true,
                             decoration: InputDecoration(
                               labelText: 'Repetir contraseña',
-                              border: OutlineInputBorder(),
+                              enabledBorder: OutlineInputBorder(),
                             ),
                           ),
                         ],

@@ -14,3 +14,6 @@ whatsapp2/macos/Flutter/GeneratedPluginRegistrant.swift
 whatsapp2/linux/flutter/generated_plugins.cmake
 whatsapp2/linux/flutter/generated_plugin_registrant.h
 whatsapp2/linux/flutter/generated_plugin_registrant.cc
+*.cc
+*.h
+*.cmake
