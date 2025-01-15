@@ -69,7 +69,7 @@ class SingUp extends StatelessWidget {
                           TextField(
                             controller: emailController,
                             decoration: InputDecoration(
-                              labelText: 'email',
+                              labelText: 'Email',
                               border: OutlineInputBorder(),
                             ),
                           ),
@@ -78,7 +78,7 @@ class SingUp extends StatelessWidget {
                             controller: contrasenaController,
                             obscureText: true,
                             decoration: InputDecoration(
-                              labelText: 'contraseña',
+                              labelText: 'Contraseña',
                               border: OutlineInputBorder(),
                             ),
                           ),

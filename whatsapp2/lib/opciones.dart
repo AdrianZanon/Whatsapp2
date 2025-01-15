@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:whatsapp2/LogIn.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -116,7 +118,7 @@ class _PerfilPageState extends State<PerfilPage> {
   void _goToLogin() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => InicioSesion()),
     );
   }
 
@@ -156,7 +158,7 @@ class _PerfilPageState extends State<PerfilPage> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: _goToLogin, // Acción para ir al login
-              child: Text('Ir a Login'),
+              child: Text('Cerrar Sesión'),
             ),
           ],
         ),
@@ -361,33 +363,6 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
             ElevatedButton(
               onPressed: _changePassword,
               child: Text('Guardar'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Página de inicio de sesión (LoginPage)
-class LoginPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Inicio de sesión'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Pantalla de inicio de sesión'),
-            ElevatedButton(
-              onPressed: () {
-                // Navegar de vuelta al perfil después de iniciar sesión
-                Navigator.pop(context);
-              },
-              child: Text('Regresar al perfil'),
             ),
           ],
         ),
