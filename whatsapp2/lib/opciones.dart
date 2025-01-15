@@ -116,7 +116,7 @@ class _PerfilPageState extends State<PerfilPage> {
 
   // Navegar a la página de Login
   void _goToLogin() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => InicioSesion()),
     );

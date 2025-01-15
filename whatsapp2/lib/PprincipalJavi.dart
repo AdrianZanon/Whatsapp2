@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp2/Chat_Manases.dart';
 import 'package:whatsapp2/Chat_Rodri.dart';
-import 'package:whatsapp2/PprincipalJavi.dart';
-import 'package:whatsapp2/opciones.dart';
-import 'Chat_Javi.dart';
-import 'Chat_Elvira.dart'; // Importa la pantalla de conversación
+import 'package:whatsapp2/opciones.dart'; // Importa la pantalla de conversación
 
 // Definimos una clase para representar cada chat
-class Chat {
+class Chat2 {
   final String name;
   final String lastMessage;
   final String imageUrl;
 
-  Chat({
+  Chat2({
     required this.name,
     required this.lastMessage,
     required this.imageUrl,
@@ -25,23 +21,23 @@ class PrincipalJavi extends StatefulWidget {
 }
 
 class _PrincipalState extends State<PrincipalJavi> {
-  final List<Chat> chats = [
-    Chat(
+  final List<Chat2> chats = [
+    Chat2(
       name: "Iñigo",
       lastMessage: "Las buenas al cielo y las malas al Citroën",
       imageUrl: "assets/images/default_profile.png",
     ),
-    Chat(
+    Chat2(
       name: "Manasés",
       lastMessage: "Soy el gurú del sexo",
       imageUrl: "assets/images/default_profile.png",
     ),
-    Chat(
+    Chat2(
       name: "Rodrigo",
       lastMessage: "BIP BOP",
       imageUrl: "assets/images/default_profile.png",
     ),
-    Chat(
+    Chat2(
       name: "Elvira La rojas",
       lastMessage: "Hola Javi, dame leche",
       imageUrl: "assets/images/default_profile.png",
@@ -49,7 +45,7 @@ class _PrincipalState extends State<PrincipalJavi> {
   ];
 
   TextEditingController _controller = TextEditingController();
-  List<Chat> filteredChats = [];
+  List<Chat2> filteredChats = [];
 
   @override
   void initState() {
@@ -122,28 +118,28 @@ class _PrincipalState extends State<PrincipalJavi> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Elvira(chat: chat),
+                          builder: (context) => Chat_Rodri(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Elvira La rojas") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Elvira(chat: chat),
+                          builder: (context) => Chat_Rodri(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Manasés") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Elvira(chat: chat),
+                          builder: (context) => Chat_Rodri(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Rodrigo") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Elvira(chat: chat),
+                          builder: (context) => Chat_Rodri(chat: chat),
                         ),
                       );
                     }
@@ -159,7 +155,7 @@ class _PrincipalState extends State<PrincipalJavi> {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  final List<Chat> chats;
+  final List<Chat2> chats;
 
   CustomSearchDelegate({required this.chats});
 
@@ -205,7 +201,7 @@ class CustomSearchDelegate extends SearchDelegate {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Chat_Elvira(chat: chat),
+                builder: (context) => Chat_Rodri(chat: chat),
               ),
             );
           },
@@ -234,7 +230,7 @@ class CustomSearchDelegate extends SearchDelegate {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Chat_Elvira(chat: chat),
+                builder: (context) => Chat_Rodri(chat: chat),
               ),
             );
           },

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp2/Chat_Manases.dart';
-import 'package:whatsapp2/Chat_Rodri.dart';
-import 'package:whatsapp2/PprincipalSergi.dart';
 import 'package:whatsapp2/opciones.dart';
-import 'package:whatsapp2/Chat_Irene.dart';
+import 'package:whatsapp2/Chat_Inigo.dart';
 
 //import 'Chat_Elvira.dart'; // Importa la pantalla de conversación
 
@@ -124,28 +121,28 @@ class _PrincipalState extends State<PrincipalSergi> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Irene(chat: chat),
+                          builder: (context) => Chat_Inigo(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Irene") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Irene(chat: chat),
+                          builder: (context) => Chat_Inigo(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Manasés") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Irene(chat: chat),
+                          builder: (context) => Chat_Inigo(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Rodrigo") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Irene(chat: chat),
+                          builder: (context) => Chat_Inigo(chat: chat),
                         ),
                       );
                     }
@@ -207,7 +204,7 @@ class CustomSearchDelegate extends SearchDelegate {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Chat_Irene(chat: chat),
+                builder: (context) => Chat_Inigo(chat: chat),
               ),
             );
           },
@@ -236,7 +233,7 @@ class CustomSearchDelegate extends SearchDelegate {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Chat_Irene(chat: chat),
+                builder: (context) => Chat_Inigo(chat: chat),
               ),
             );
           },

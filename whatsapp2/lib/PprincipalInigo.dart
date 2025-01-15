@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp2/Chat_Manases.dart';
-import 'package:whatsapp2/Chat_Rodri.dart';
-import 'package:whatsapp2/PprincipalJavi.dart';
+import 'package:whatsapp2/Chat_Elvira.dart';
+import 'package:whatsapp2/Chat_Irene.dart';
+//import 'package:whatsapp2/PprincipalJavi.dart';
 import 'package:whatsapp2/opciones.dart';
-import 'chat_Javi.dart'; // Importa la pantalla de conversación
+import 'Chat_Javi.dart';
+//import 'Chat_Elvira.dart';
+//import 'Chat_Irene.dart'; // Importa la pantalla de conversación
 
 // Definimos una clase para representar cada chat
 class Chat1 {
@@ -32,7 +34,7 @@ class _PrincipalState extends State<PrincipalInigo> {
     ),
     Chat1(
       name: "Manasés",
-      lastMessage: "Soy el gurú del sexo, y lo sabes",
+      lastMessage: "Soy El gurú, y lo sabes",
       imageUrl: "assets/images/default_profile.png",
     ),
     Chat1(
@@ -123,14 +125,14 @@ class _PrincipalState extends State<PrincipalInigo> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Javi(chat: chat),
+                          builder: (context) => Chat_Elvira(chat: chat),
                         ),
                       );
                     } else if (chat.name == "Manasés") {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Chat_Javi(chat: chat),
+                          builder: (context) => Chat_Irene(chat: chat),
                         ),
                       );
                     }

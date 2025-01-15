@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:whatsapp2/PprincipalJavi.dart';
+import 'package:whatsapp2/PprincipalInigo.dart';
+//import 'package:whatsapp2/PprincipalJavi.dart';
 
 class Chat_Elvira extends StatefulWidget {
-  final Chat chat;
+  final Chat1 chat;
 
   Chat_Elvira({required this.chat});
 

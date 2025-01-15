@@ -97,8 +97,9 @@ class _Chat_JaviState extends State<Chat_Javi> {
                     controller: _messageController,
                     decoration: InputDecoration(
                       hintText: 'Escribe un mensaje...',
-                      border: OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(20.0),
+                        borderSide: BorderSide(color: Colors.black, width: 1.0),
                       ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
                     ),
